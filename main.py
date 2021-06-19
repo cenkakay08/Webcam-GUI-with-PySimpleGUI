@@ -60,7 +60,10 @@ def detectFace(cap):
                 if gloabalDropDownStringValue == "Blur":
                     # Apply the GaussianBlur according to face location and dimensions.
                     frame[y : y + h, x : x + w] = cv2.GaussianBlur(
-                        frame[y : y + h, x : x + w], (51, 51), blurStrength
+                        frame[y : y + h, x : x + w],
+                        (51, 51),
+                        blurStrength,
+                        blurStrength,
                     )
                 else:
                     # Resize the emoji image according to face dimensions.
@@ -111,7 +114,7 @@ layout = [
         sg.Text(text="Strength of Blur Effect:"),
         # Slider for blur strenght.
         sg.Slider(
-            range=(1, 20),
+            range=(1, 53),
             default_value=blurStrength,
             size=(20, 15),
             orientation="horizontal",
