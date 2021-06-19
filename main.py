@@ -69,8 +69,9 @@ def detectFace(cap):
                     roi = frame[y : w + y, x : h + x]
                     # Now create a mask of emoji and create its inverse mask also
                     emojiResizedgray = cv2.cvtColor(emojiResized, cv2.COLOR_BGR2GRAY)
+                    # Make emoji pixels only black or white.
                     ret, mask = cv2.threshold(
-                        emojiResizedgray, 1, 255, cv2.THRESH_BINARY
+                        emojiResizedgray, 1, 255, cv2.THRESH_BINARY,
                     )
                     mask_inv = cv2.bitwise_not(mask)
 
