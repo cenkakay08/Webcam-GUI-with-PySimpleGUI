@@ -33,7 +33,7 @@ def setBlurStrength(val):
 # Function for set emoji variable value.
 def setEffect(string):
     global emoji
-    emoji = cv2.imread(string + ".png", cv2.IMREAD_UNCHANGED)
+    emoji = cv2.imread(string + ".png")
 
 
 # Main function for detect face and manipulate the image.
@@ -65,25 +65,22 @@ def detectFace(cap):
                 else:
                     # Resize the emoji image according to face dimensions.
                     emojiResized = cv2.resize(emoji, (w, h))
-                    # Get the alpha channel values of sized emoji image.
-                    alpha = emojiResized[:, :, 3]
-                    # Make the constant black expect whites.
-                    _, alpha = cv2.threshold(alpha, 1, 255, cv2.THRESH_BINARY)
-                    # Delete the alpha channel from emoji image.
-                    emojiResized = cv2.cvtColor(emojiResized, cv2.COLOR_BGRA2BGR)
-                    # Define the location of image part that will change.
+                    # Define the location of image part that will change. ROI = rectangular region of interest.
                     roi = frame[y : w + y, x : h + x]
-                    # Rename the alpha as a mask. Clear to understand.
-                    mask = alpha
-                    # Create inverse mask
+                    # Now create a mask of emoji and create its inverse mask also
+                    emojiResizedgray = cv2.cvtColor(emojiResized, cv2.COLOR_BGR2GRAY)
+                    ret, mask = cv2.threshold(
+                        emojiResizedgray, 1, 255, cv2.THRESH_BINARY
+                    )
                     mask_inv = cv2.bitwise_not(mask)
-                    # black-out the area of emoji in ROI.
+
+                    # Now black-out the area of logo in ROI
                     img1_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
 
-                    # Take only region of emoji from emoji.
+                    # Take only region of emoji from emoji image.
                     img2_fg = cv2.bitwise_and(emojiResized, emojiResized, mask=mask)
 
-                    # Put logo in ROI and modify the main image.
+                    # Put emoji in ROI and modify the main image.
                     dst = cv2.add(img1_bg, img2_fg)
                     frame[y : w + y, x : h + x] = dst
 
