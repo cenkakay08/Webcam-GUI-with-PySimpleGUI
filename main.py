@@ -91,8 +91,8 @@ def detectFace(cap):
             if isFaceLineDrawActivated:
                 # Draw a renctangle around face.
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-        # Format the frame as png because our GUI only support PNG.
-        imgbytes = cv2.imencode(".png", frame)[1].tobytes()
+        # Format the frame as ppm.
+        imgbytes = cv2.imencode(".ppm", frame)[1].tobytes()
         # Return frame after all process.
         return imgbytes
 
